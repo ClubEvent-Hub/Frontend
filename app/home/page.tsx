@@ -21,61 +21,98 @@ export default function HomePage() {
     window.location.href = '/';
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [clubsRes, eventsRes] = await Promise.all([
-          axios.get('https://sys-multi-agents.onrender.com/auth/clubs'),
-          axios.get('https://sys-multi-agents.onrender.com/events/'),
-        ]);
+   useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const [clubsRes, eventsRes] = await Promise.all([
+        axios.get('https://sys-multi-agents.onrender.com/auth/clubs'),
+        axios.get('https://sys-multi-agents.onrender.com/events/'),
+      ]);
 
-        const fallbackImages = [
-          'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80', // teamwork
-          'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80', // tech workspace
-          'https://images.unsplash.com/photo-1522205408450-add114ad53fe?auto=format&fit=crop&w=800&q=80', // meeting room
-          'https://images.unsplash.com/photo-1504386106331-3e4e71712b38?auto=format&fit=crop&w=800&q=80', // creative desk
-          'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=800&q=80', // hackathon
-          'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=80', // collaboration
-          'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80', // startup team
-          'https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&w=800&q=80', // students coding
-        ];
+      const enrichedClubs = clubsRes.data.map((club: Club, index: number) => ({
+        id: club.id,
+        clubName: club.name || 'Unnamed Club',
+        clubDescription: club.description || 'No description available.',
+        clubImage:
+          club.image ||
+          `https://source.unsplash.com/random/400x300?sig=${index}&technology,team,community`,
+      }));
 
-        const enrichedClubs = clubsRes.data.map((club:Club, index: number) => ({
-          id: club.id,
-          clubName: club.name || 'Unnamed Club',
-          clubDescription: club.description || 'No description available.',
-          clubImage: club.image || fallbackImages[index % fallbackImages.length],
-        }));
+      const enrichedEvents = eventsRes.data.map((event: EventType, index: number) => ({
+        id: event.id,
+        title: event.title || 'Untitled Event',
+        description: event.description || 'No description available.',
+        date: event.date || new Date().toISOString(),
+        image:
+          event.image ||
+          `https://source.unsplash.com/random/400x300?sig=${index + 100}&event,conference,tech`,
+        clubName: event.clubName || 'Unknown Club',
+      }));
 
-        const enrichedEvents = eventsRes.data.map((event: EventType, index: number) => ({
-          id: event.id,
-          title: event.title || 'Untitled Event',
-          description: event.description || 'No description available.',
-          date: event.date || new Date().toISOString(),
-          image:
-            event.image ||
-            [
-              'https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=800&q=80', // tech talk
-              'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80', // teamwork
-              'https://images.unsplash.com/photo-1556761175-129418cb2dfe?auto=format&fit=crop&w=800&q=80', // coding workshop
-              'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80', // developer meetup
-              'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80', // design thinking
-            ][index % 5],
-          clubName: event.clubName|| 'Unknown Club',
-        }));
+      setClubs(enrichedClubs);
+      setEvents(enrichedEvents);
+    } catch (err) {
+      console.error('Error fetching clubs or events:', err);
+      setError(null); 
 
-        setClubs(enrichedClubs);
-        setEvents(enrichedEvents);
-      } catch (err) {
-        console.error('Error fetching clubs or events:', err);
-        setError('Failed to load clubs or events.');
-      } finally {
-        setLoading(false);
-      }
-    };
+      const fallbackClubs = [
+        {
+          id: 1,
+          clubName: 'AI Innovators',
+          clubDescription: 'Exploring Artificial Intelligence and Machine Learning.',
+          clubImage: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80',
+        },
+        {
+          id: 2,
+          clubName: 'CyberSec Titans',
+          clubDescription: 'Learn ethical hacking and cybersecurity principles.',
+          clubImage: 'https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=800&q=80',
+        },
+        {
+          id: 3,
+          clubName: 'DevConnect',
+          clubDescription: 'Connecting developers through events and mentorship.',
+          clubImage: 'https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&w=800&q=80',
+        },
+      ];
 
-    fetchData();
-  }, []);
+      const fallbackEvents = [
+        {
+          id: 101,
+          title: 'Tech Talk: The Future of AI',
+          description: 'Join us for an insightful session about the next wave of AI innovation.',
+          date: new Date().toISOString(),
+          image: 'https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=800&q=80',
+          clubName: 'AI Innovators',
+        },
+        {
+          id: 102,
+          title: 'Cyber Defense Workshop',
+          description: 'Hands-on session on building stronger security practices.',
+          date: new Date().toISOString(),
+          image: 'https://images.unsplash.com/photo-1556761175-129418cb2dfe?auto=format&fit=crop&w=800&q=80',
+          clubName: 'CyberSec Titans',
+        },
+        {
+          id: 103,
+          title: 'Dev Networking Night',
+          description: 'Connect with other developers and share your projects.',
+          date: new Date().toISOString(),
+          image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',
+          clubName: 'DevConnect',
+        },
+      ];
+
+      setClubs(fallbackClubs);
+      setEvents(fallbackEvents);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
+
 
   const filteredEvents = events.filter((e: EventType) =>
     e.title.toLowerCase().includes(searchTerm.toLowerCase())
