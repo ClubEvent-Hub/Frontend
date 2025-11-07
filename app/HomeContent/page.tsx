@@ -41,7 +41,7 @@ export default function Home() {
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               <span className="bg-gradient-to-r  from-red-600 to-green-600 hover:from-red-600 hover:to-green-600 bg-clip-text text-transparent">
-                Club Management
+                GDG Club Links
               </span>
               <br />
               <span className="text-gray-900">Made Simple</span>
