@@ -12,7 +12,7 @@ export default function Home() {
       <header className="flex items-center justify-between px-6 md:px-12 py-4 bg-filter backdrop-blur-md shadow sticky top-0 z-10">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/Component.svg" alt="Logo" width={36} height={36} />
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 cursor-none">
             <span className="text-blue-600 text-3xl font-bold">G</span>
             <span className="text-red-600 text-3xl font-bold">C</span>
             <span className="text-emerald-500 text-3xl font-bold">L</span>
@@ -58,9 +58,10 @@ export default function Home() {
               </Link>
               <Link href="/auth/login">
                
-               <Button size="lg" variant="outline" className="h-14 px-8 text-lg border-2  hover:bg-white/10">
+               <Button size="lg" variant="outline" className="h-14 px-8 text-lg border-2  ">
                 Sign In
               </Button>
+            
               </Link>
             </div>
             <p className="text-sm text-gray-500 mt-6">

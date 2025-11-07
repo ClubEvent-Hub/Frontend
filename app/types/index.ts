@@ -26,6 +26,13 @@ export type Club = {
   clubStartDate: string;
   clubEndDate: string;
    clubImage?: string
+   name?: string
+  description: string
+  image: string
+  title: string
+  date: string
+  club_id: string
+  club_name: string
 };
 
 export interface Event {
@@ -59,6 +66,7 @@ export interface Event {
   location: string
   current_registrations: string
   club_id: string
+  tart_date: string
 }
 
 export interface Post {
